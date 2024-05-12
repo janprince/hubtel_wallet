@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HubtelWallet.Services;
 
-public class WalletService
+public class WalletService : IWalletService
 {
     public readonly WalletContext _context;
 
@@ -29,7 +29,7 @@ public class WalletService
 
     public Wallet Create(Wallet wallet)
     {
-        if (wallet is { AccountNumber.Length: > 5, Type: Wallet.AccountType.Card })
+        if (wallet is { AccountNumber.Length: > 5, Type: Wallet.WalletType.Card })
         {
             wallet.AccountNumber = wallet.AccountNumber.Substring(0, 6);
         }

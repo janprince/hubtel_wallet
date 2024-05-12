@@ -1,4 +1,5 @@
 using HubtelWallet.Data;
+using HubtelWallet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlite<WalletContext>("Data Source=HubtelWallet.db");
+builder.Services.AddScoped<WalletService>();
 
 var app = builder.Build();
 

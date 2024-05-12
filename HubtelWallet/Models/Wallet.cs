@@ -10,7 +10,7 @@ public class Wallet
     public string? Name { get; set; }
     
     [Required]
-    public AccountType Type { get; set; }
+    public WalletType Type { get; set; }
     
     [Required]
     [MaxLength(50)]
@@ -18,13 +18,14 @@ public class Wallet
     
     [Required]
     public AccountScheme Scheme { get; set; }
-    public DateTime CreatedAt { get; set; }
     
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  // defaults the createdAt to the "NOW"
+
     [MaxLength(10)]
     [Required]
     public string? OwnerPhoneNumber { get; set; }
 
-    public enum AccountType
+    public enum WalletType
     {
         MobileMoney,
         Card
@@ -38,5 +39,4 @@ public class Wallet
         Vodafone,
         AirtelTigo
     }
-    
 }
