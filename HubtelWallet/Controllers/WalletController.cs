@@ -67,7 +67,11 @@ public class WalletController : ControllerBase
         
         // check for duplicate wallets
         var allWallets = _service.GetAll();
-        var accountWallet = allWallets.FirstOrDefault(w => w.AccountNumber == wallet.AccountNumber);
+        
+        var accountWallet = wallet.Type == Wallet.WalletType.MobileMoney 
+            ? allWallets.FirstOrDefault(w => w.AccountNumber == wallet.AccountNumber) 
+            : allWallets.FirstOrDefault(w => w.AccountNumber == wallet.AccountNumber.Substring(0, 6));
+        
         if (accountWallet is not null)
         {
             return Conflict("A wallet with the same account number already exists");

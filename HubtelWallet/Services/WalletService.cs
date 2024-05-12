@@ -46,11 +46,11 @@ public class WalletService : IWalletService
 
         if (walletToDelete is null)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Wallet does not exist");
         }
-        
-        throw new InvalidOperationException("Wallet does not exist");
-        
+
+        _context.Remove(walletToDelete);
+        _context.SaveChanges();
     }
 
     public List<Wallet> GetWalletsByOwner(string ownerPhoneNumber)
