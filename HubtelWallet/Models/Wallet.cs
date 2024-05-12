@@ -13,7 +13,7 @@ public class Wallet
     public WalletType Type { get; set; }
     
     [Required]
-    [MaxLength(50)]
+    [MaxLength(17)]
     public string? AccountNumber { get; set; }
     
     [Required]
@@ -27,13 +27,13 @@ public class Wallet
 
     public enum WalletType
     {
-        MobileMoney,
+        MobileMoney = 1 ,
         Card
     }
 
     public enum AccountScheme
     {
-        Visa,
+        Visa = 1,
         Mastercard,
         Mtn,
         Vodafone,

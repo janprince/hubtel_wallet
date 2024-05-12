@@ -72,6 +72,23 @@ public class WalletController : ControllerBase
         {
             return Conflict("A wallet with the same account number already exists");
         }
+        
+        // check if account scheme is of the right type
+        if (wallet.Type == Wallet.WalletType.Card)
+        {
+            if (wallet.Scheme != Wallet.AccountScheme.Mastercard && wallet.Scheme != Wallet.AccountScheme.Visa)
+            {
+                return BadRequest("Invalid account scheme for the selected type");
+            }
+        }
+        else
+        {
+            if (wallet.Scheme != Wallet.AccountScheme.Mtn && wallet.Scheme != Wallet.AccountScheme.AirtelTigo &&
+                wallet.Scheme != Wallet.AccountScheme.Vodafone)
+            {
+                return BadRequest("Invalid account scheme for the selected type");
+            }
+        }
 
         _service.Create(wallet);
         return CreatedAtAction(nameof(GetById), new { id = wallet.Id }, wallet);

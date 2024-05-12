@@ -1,5 +1,3 @@
-using HubtelWallet.Data;
-
 namespace HubtelWallet.Data;
 
 public static class Extensions
