@@ -8,7 +8,7 @@ public static class DbInitializer
     {
         if (context.Wallets.Any())
         {
-            return; // DB has been seeded
+            return; // means the DB has been seeded 🤔
         }
 
         var wallets = new Wallet[]
