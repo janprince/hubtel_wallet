@@ -11,6 +11,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSqlite<WalletContext>("Data Source=HubtelWallet.db");
 builder.Services.AddScoped<IWalletService, WalletService>();
 
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

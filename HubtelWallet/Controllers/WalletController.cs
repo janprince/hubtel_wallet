@@ -1,3 +1,5 @@
+using AutoMapper;
+using HubtelWallet.Dto;
 using HubtelWallet.Models;
 using HubtelWallet.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +11,12 @@ namespace HubtelWallet.Controllers;
 public class WalletController : ControllerBase
 {
     private readonly IWalletService _service;
+    private readonly IMapper _mapper;
 
-    public WalletController(IWalletService service)
+    public WalletController(IWalletService service, IMapper mapper)
     {
         _service = service;
+        _mapper = mapper;
     }
 
     [HttpGet("userWallets/{phoneNumber}")]
@@ -52,8 +56,9 @@ public class WalletController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Create(Wallet wallet)
+    public ActionResult Create(WalletPostDto walletPostDto)
     {
+        var wallet = _mapper.Map<Wallet>(walletPostDto);
         
         // check if maximum wallet limit has been exceeded 
         if (wallet.OwnerPhoneNumber != null)
