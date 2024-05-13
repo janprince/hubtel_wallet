@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HubtelWallet.Models;
 
@@ -25,13 +26,15 @@ public class Wallet
     [MaxLength(10)]
     [Required]
     public string? OwnerPhoneNumber { get; set; }
-
+    
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum WalletType
     {
         MobileMoney = 1 ,
         Card
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AccountScheme
     {
         Visa = 1,
