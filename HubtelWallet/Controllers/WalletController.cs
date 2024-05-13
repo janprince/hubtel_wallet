@@ -15,10 +15,10 @@ public class WalletController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
-    public IEnumerable<Wallet> GetAll()
+    [HttpGet("userWallets/{phoneNumber}")]
+    public IEnumerable<Wallet> GetWalletsByOwner(string phoneNumber)
     {
-        return _service.GetAll();
+        return _service.GetWalletsByOwner(phoneNumber);
     }
 
     [HttpGet("{id}")]
