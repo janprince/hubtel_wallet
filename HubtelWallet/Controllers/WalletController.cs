@@ -8,9 +8,9 @@ namespace HubtelWallet.Controllers;
 [Route("[controller]")]
 public class WalletController : ControllerBase
 {
-    private readonly IWalletService _service;
+    private readonly WalletService _service;
 
-    public WalletController(IWalletService service)
+    public WalletController(WalletService service)
     {
         _service = service;
     }
