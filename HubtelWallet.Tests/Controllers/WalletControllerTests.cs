@@ -74,4 +74,100 @@ public class WalletControllerTests
         // Assert
         Assert.IsType<NotFoundResult>(result.Result);
     }
+
+    [Fact]
+        public void Create_WithValidWallet_ReturnsCreatedAtAction()
+        {
+            // Arrange
+            var wallet = new Wallet
+            {
+                Id = 1,
+                OwnerPhoneNumber = "1234567890",
+                Type = Wallet.WalletType.MobileMoney,
+                AccountNumber = "1234567890123456",
+                Scheme = Wallet.AccountScheme.Mtn
+            };
+            var serviceMock = new Mock<IWalletService>();
+            serviceMock.Setup(repo => repo.GetWalletsByOwner(wallet.OwnerPhoneNumber)).Returns(new List<Wallet>());
+            serviceMock.Setup(repo => repo.GetAll()).Returns(new List<Wallet>());
+            serviceMock.Setup(repo => repo.Create(wallet)).Returns(wallet);
+            var controller = new WalletController(serviceMock.Object);
+
+            // Act
+            var result = controller.Create(wallet);
+
+            // Assert
+            var actionResult = Assert.IsType<CreatedAtActionResult>(result);
+            Assert.Equal("GetById", actionResult.ActionName);
+            Assert.Equal(1, actionResult.RouteValues["id"]); // checking if the id is returned
+        }
+
+        [Fact]
+        public void Create_WithExceededMaxWallets_ReturnsBadRequest()
+        {
+            // Arrange
+            var wallet = new Wallet
+            {
+                OwnerPhoneNumber = "1234567890"
+            };
+            var wallets = new List<Wallet>
+            {
+                new Wallet(), new Wallet(), new Wallet(), new Wallet(), new Wallet() // 5 wallets
+            };
+            var serviceMock = new Mock<IWalletService>();
+            serviceMock.Setup(repo => repo.GetWalletsByOwner(wallet.OwnerPhoneNumber)).Returns(wallets);
+            var controller = new WalletController(serviceMock.Object);
+
+            // Act
+            var result = controller.Create(wallet);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("Maximum wallet number exceeded", actionResult.Value);
+        }
+
+        [Fact]
+        public void Create_WithDuplicateAccountNumber_ReturnsConflict()
+        {
+            // Arrange
+            var wallet = new Wallet
+            {
+                AccountNumber = "1234567890123456"
+            };
+            var wallets = new List<Wallet>
+            {
+                new Wallet { AccountNumber = "1234567890123456" }
+            };
+            var serviceMock = new Mock<IWalletService>();
+            serviceMock.Setup(repo => repo.GetAll()).Returns(wallets);
+            var controller = new WalletController(serviceMock.Object);
+
+            // Act
+            var result = controller.Create(wallet);
+
+            // Assert
+            var actionResult = Assert.IsType<ConflictObjectResult>(result);
+            Assert.Equal("A wallet with the same account number already exists", actionResult.Value);
+        }
+
+        [Fact]
+        public void Create_WithInvalidAccountScheme_ReturnsBadRequest()
+        {
+            // Arrange
+            var wallet = new Wallet
+            {
+                Type = Wallet.WalletType.Card,
+                Scheme = Wallet.AccountScheme.Mtn
+            };
+            var serviceMock = new Mock<IWalletService>();
+            var controller = new WalletController(serviceMock.Object);
+
+            // Act
+            var result = controller.Create(wallet);
+
+            // Assert
+            var actionResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("Invalid account scheme for the selected", actionResult.Value);
+        }
+
 }
