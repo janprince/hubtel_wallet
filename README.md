@@ -1,21 +1,13 @@
-## Assignment: Designing an API Service for Managing User Wallets
-
-### Pre-requisites:
-
-Sign up at [hubtel.com](https://hubtel.com)
-
-### Tasks:
-
-1. **Develop a POST endpoint to add a wallet** with the following business rules:
+1. **A POST endpoint to add a wallet** with the following business rules:
    - Prevent duplicate wallet additions.
    - A single user should NOT have more than 5 wallets.
    - Only the first 6 digits of the card number should be stored.
 
-2. **Develop a DELETE endpoint to remove a wallet**.
+2. **A DELETE endpoint to remove a wallet**.
 
-3. **Develop a GET endpoint to retrieve a single wallet using an ID**.
+3. **A GET endpoint to retrieve a single wallet using an ID**.
 
-4. **Develop a GET endpoint to list all wallets**.
+4. **A GET endpoint to list all wallets**.
 
 5. **Add Unit Tests** using the xUnit testing framework.
 
